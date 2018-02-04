@@ -42,6 +42,12 @@
 #  include <dirent.h>
 #  include <sys/stat.h>
 #  include <glob.h>
+#elif defined(__FreeBSD__)
+#  include <sys/wait.h>
+#  include <unistd.h>
+#  include <dirent.h>
+#  include <sys/stat.h>
+#  include <glob.h>
 #else
 #  include <unistd.h>
 #  include <dirent.h>
@@ -660,6 +666,18 @@ std::string proc_self_dirname()
 	ssize_t buflen = readlink("/proc/self/exe", path, sizeof(path));
 	if (buflen < 0) {
 		log_error("readlink(\"/proc/self/exe\") failed: %s\n", strerror(errno));
+	}
+	while (buflen > 0 && path[buflen-1] != '/')
+		buflen--;
+	return std::string(path, buflen);
+}
+#elif defined(__FreeBSD__)
+std::string proc_self_dirname()
+{
+	char path[PATH_MAX];
+	ssize_t buflen = readlink("/proc/curproc/file", path, sizeof(path));
+	if (buflen < 0) {
+		log_error("readlink(\"/proc/curproc/file\") failed: %s\n", strerror(errno));
 	}
 	while (buflen > 0 && path[buflen-1] != '/')
 		buflen--;
