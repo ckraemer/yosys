@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 OPTIND=1
 seed=""    # default to no seed specified
@@ -11,4 +11,7 @@ do
 done
 shift "$((OPTIND-1))"
 
+if [ $(uname) == "FreeBSD" ]; then
+	MAKE=gmake
+fi
 exec ${MAKE:-make} -f ../tools/autotest.mk $seed EXTRA_FLAGS="-e" *.v

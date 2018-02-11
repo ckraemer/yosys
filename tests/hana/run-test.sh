@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 OPTIND=1
 seed=""    # default to no seed specified
@@ -10,5 +10,9 @@ do
     esac
 done
 shift "$((OPTIND-1))"
+
+if [ $(uname) == "FreeBSD" ]; then
+	MAKE=gmake
+fi
 
 exec ${MAKE:-make} -f ../tools/autotest.mk $seed EXTRA_FLAGS="-l hana_vlib.v -n 300 -e" test_*.v

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 libs=""
 genvcd=false
@@ -17,6 +17,10 @@ scriptfiles=""
 scriptopt=""
 toolsdir="$(cd $(dirname $0); pwd)"
 warn_iverilog_git=false
+
+if [ $(uname) == "FreeBSD" ]; then
+	CC=cc
+fi
 
 if [ ! -f $toolsdir/cmp_tbdata -o $toolsdir/cmp_tbdata.c -nt $toolsdir/cmp_tbdata ]; then
 	( set -ex; ${CC:-gcc} -Wall -o $toolsdir/cmp_tbdata $toolsdir/cmp_tbdata.c; ) || exit 1

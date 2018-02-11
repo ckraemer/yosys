@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # run this test many times:
 # time bash -c 'for ((i=0; i<100; i++)); do echo "-- $i --"; bash run-test.sh || exit 1; done'
@@ -37,6 +37,10 @@ python3 generate.py -c $count $seed
 	done
 	echo "$all_targets"
 } > temp/makefile
+
+if [ $(uname) == "FreeBSD" ]; then
+	MAKE=gmake
+fi
 
 echo "running tests.."
 ${MAKE:-make} -f temp/makefile

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -ex
 
@@ -8,6 +8,10 @@ tar --strip=1 -xjf vloghammer_tb.tar.bz2
 
 make clean
 rm -rf log_test_*
+
+if [ $(uname) == "FreeBSD" ]; then
+	MAKE=gmake
+fi
 
 ${MAKE:-make} EXIT_ON_ERROR=1 YOSYS_BIN=$PWD/../../yosys YOSYS_SCRIPT="proc;;" check_yosys
 ${MAKE:-make} -f test_makefile MODE=share

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 OPTIND=1
 seed=""    # default to no seed specified
@@ -17,4 +17,7 @@ if ! which iverilog > /dev/null ; then
   exit 1
 fi
 
+if [ $(uname) == "FreeBSD" ]; then
+    MAKE=gmake
+fi
 exec ${MAKE:-make} -f ../tools/autotest.mk $seed *.v
