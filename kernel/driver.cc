@@ -34,7 +34,7 @@
 #include <limits.h>
 #include <errno.h>
 
-#if defined (__linux__) || defined(__FreeBSD__) 
+#if defined (__linux__) || defined(__FreeBSD__)
 #  include <sys/types.h>
 #  include <unistd.h>
 #endif
